@@ -74,3 +74,28 @@ slog.SetLevel("ERROR")
 ```
 
 ## Main
+```golang
+package main
+
+import (
+	"log"
+	"github.com/Cannotfindjob/simpleLog"
+)
+
+func main() {
+        logger := NewSimpleLog()
+	logger.SetLevel("WARN")
+
+	var config map[string]interface{} = map[string]interface{}{"filepath":"./test.log"}
+	stringConfig, _ := json.Marshal(config)
+	_:logger.SetOutPut(AdapterFile, string(stringConfig))
+
+	log.SetOutput(logger)
+	log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
+
+	log.Print("[DEBUG] Debugging") // this will not print
+	log.Print("[WARN] Warning") // this will print
+	log.Print("[ERROR] Erring") // and so will this 
+	log.Print("Message I haven't updated") // and so will this
+}
+```
