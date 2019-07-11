@@ -28,7 +28,6 @@ func (c *ConsoleObject) Init(jsonConfig string) error {
 }
 
 func (c *ConsoleObject) Write(p []byte) (n int, err error) {
-
 	return c.file.Write(p)
 }
 

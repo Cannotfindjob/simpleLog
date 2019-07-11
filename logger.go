@@ -3,7 +3,6 @@ package simpleLogger
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"sync"
 )
@@ -22,11 +21,11 @@ const (
 )
 
 type Slogger struct {
-	Writer io.Writer
+	Writer Logger
 	lock   sync.Mutex
-	once    sync.Once
+	once   sync.Once
 	Levels []string
-	Level string
+	Level  string
 	filterLevels map[string]struct{}
 }
 
@@ -41,10 +40,10 @@ var adaptersManager = make(map[string]func() Logger)
 
 func Register(name string, logger func() Logger) {
 	if logger == nil {
-		panic("SimpleLog: Register provide is nil")
+		panic("SimpleLog: register provide is nil")
 	}
 	if _, ok := adaptersManager[name]; ok {
-		panic("SimpleLog: Register called twice for provider " + name)
+		panic("SimpleLog: register called twice for provider " + name)
 	}
 	adaptersManager[name] = logger
 }
@@ -52,7 +51,7 @@ func Register(name string, logger func() Logger) {
 
 func NewSimpleLog() *Slogger {
 	logger := new(Slogger)
-	_: logger.SetOutPut(AdapterConsole,"")
+	_:logger.SetOutPut(AdapterConsole,"")
     logger.Levels = []string{LevelDebug, LevelInformational, LevelWarning, LevelError, LevelFatal}
 	logger.Level = LevelDebug
 	return logger
@@ -66,13 +65,15 @@ func (sl *Slogger) SetOutPut(adapterName string, config string) error {
 	if !ok {
 		return fmt.Errorf("SimpleLogs: adaptername %s not registered", adapterName)
 	}
+
 	Logger := newLogger()
 	err := Logger.Init(config)
 
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "logs.BeeLogger.SetLogger: "+err.Error())
+		_: fmt.Fprintln(os.Stderr, "SimpleLogs: setOutPut config init", err)
 		return err
 	}
+
 	sl.Writer = Logger
 	return nil
 
@@ -82,6 +83,13 @@ func (sl *Slogger) SetLevel(l string) {
 	sl.lock.Lock()
 	defer sl.lock.Unlock()
 	sl.Level = l
+	sl.init()
+}
+
+func (sl *Slogger) SetLevels(l ...string) {
+	sl.lock.Lock()
+	defer sl.lock.Unlock()
+	sl.Levels = l
 	sl.init()
 }
 
@@ -118,4 +126,12 @@ func (sl *Slogger) Write(p []byte) (n int, err error) {
 	}
 
 	return sl.Writer.Write(p)
+}
+
+func (sl *Slogger) Flush() {
+	sl.Writer.Flush()
+}
+
+func (sl *Slogger) Close() {
+	sl.Writer.Close()
 }
