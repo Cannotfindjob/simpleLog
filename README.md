@@ -43,3 +43,13 @@ log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
 log.SetLogger("file", `{"filename":"test.log"}`)
 ```
 
+## Default Levels
+```golang
+const(
+	LevelFatal         = "FATAL"
+	LevelError         = "ERROR"
+	LevelWarning       = "WARN"
+	LevelInformational = "INFO"
+	LevelDebug         = "DEBUG"
+)
+```
