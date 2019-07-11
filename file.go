@@ -221,6 +221,7 @@ func (f *FileObject) DoRotate() {
 			_:fmt.Fprintln(os.Stderr, "SimpleLog: file rename failed: ", err)
 			return
 		}
+		f.Count--
 		return
 	}
 	_:tmpfile.Close()
