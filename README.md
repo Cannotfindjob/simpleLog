@@ -1,40 +1,34 @@
-## How to install?
+## install
 
-	go get github.com/astaxie/beego/logs
+	go get github.com/Cannotfindjob/simpleLog
 
 
 ## What adapters are supported?
 
-As of now this logs support console, file,smtp and conn.
+default console, file
 
 
-## How to use it?
+## use it
 
 First you must import it
-
-```golang
 import (
-	"github.com/astaxie/beego/logs"
+	"github.com/Cannotfindjob/simpleLog"
+	"log"
 )
-```
 
-Then init a Log (example with console adapter)
+Then init a Log (default console adapter)
 
 ```golang
-log := logs.NewLogger(10000)
-log.SetLogger("console", "")
+logger := NewSimpleLog()
+logger.SetLevel("DEBUG")
+log.SetOutput(logger)
+log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
 ```
-
-> the first params stand for how many channel
 
 Use it like this:
 
 ```golang
-log.Trace("trace")
-log.Info("info")
-log.Warn("warning")
-log.Debug("debug")
-log.Critical("critical")
+log.Println("[DEBUG] Do Debugging")
 ```
 
 ## File adapter
@@ -42,27 +36,10 @@ log.Critical("critical")
 Configure file adapter like this:
 
 ```golang
-log := NewLogger(10000)
+logger := NewSimpleLog()
+logger.SetLevel("DEBUG")
+log.SetOutput(logger)
+log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
 log.SetLogger("file", `{"filename":"test.log"}`)
 ```
 
-## Conn adapter
-
-Configure like this:
-
-```golang
-log := NewLogger(1000)
-log.SetLogger("conn", `{"net":"tcp","addr":":7020"}`)
-log.Info("info")
-```
-
-## Smtp adapter
-
-Configure like this:
-
-```golang
-log := NewLogger(10000)
-log.SetLogger("smtp", `{"username":"beegotest@gmail.com","password":"xxxxxxxx","host":"smtp.gmail.com:587","sendTos":["xiemengjun@gmail.com"]}`)
-log.Critical("sendmail critical")
-time.Sleep(time.Second * 30)
-```
