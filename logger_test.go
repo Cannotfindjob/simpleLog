@@ -21,7 +21,7 @@ func TestSetLevel(t *testing.T) {
 
 	slog := NewSimpleLog()
 	slog.SetLevels("DEBUG", "WARN", "ERROR")
-    slog.SetLevel("ERROR")
+        slog.SetLevel("ERROR")
 
 	logger := log.New(slog, "", 0)
 	logger.Print("[WARN] 1")
