@@ -35,7 +35,7 @@ func TestNewFileObjectMaxLines1000(t *testing.T) {
 	stringConfig, _ := json.Marshal(config)
 
 
-   _:logger.SetOutPut(AdapterFile, string(stringConfig))
+        _:logger.SetOutPut(AdapterFile, string(stringConfig))
 
 	log.SetOutput(logger)
 	log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
@@ -55,7 +55,7 @@ func TestNewFileObjectMaxSize10M(t *testing.T) {
 	stringConfig, _ := json.Marshal(config)
 
 
-    _:logger.SetOutPut(AdapterFile, string(stringConfig))
+        _:logger.SetOutPut(AdapterFile, string(stringConfig))
 
 	log.SetOutput(logger)
 	log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
@@ -95,7 +95,7 @@ func TestNewFileObjectCloseCompress(t *testing.T) {
 	stringConfig, _ := json.Marshal(config)
 
 
-_:logger.SetOutPut(AdapterFile, string(stringConfig))
+        _:logger.SetOutPut(AdapterFile, string(stringConfig))
 
 	log.SetOutput(logger)
 	log.SetFlags(log.LstdFlags| log.Lshortfile| log.Lmicroseconds)
